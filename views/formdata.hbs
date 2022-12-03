@@ -1,0 +1,37 @@
+<table border="1">
+  <tr>
+    <th>Building</th>
+    <th>Coord</th>
+    <th>Street</th>
+    <th>Zipcode</th>
+    <th>Borough</th>
+    <th>Cuisine</th>
+    <th>Grades</th>
+    <th>Name</th>
+    <th>Restaurant ID</th>
+  </tr>
+  {{#each data}}
+    <tr>
+      <td>{{this.address.0.building}}</td>
+      <td>{{#each this.address.0.coord}}
+          <li>{{this}}</li>
+          <br />
+        {{/each}}
+      </td>
+      <td>{{this.address.0.street}}</td>
+      <td>{{this.address.0.zipcode}}</td>
+      <td>{{this.borough}}</td>
+      <td>{{this.cuisine}}</td>
+      <td>
+        {{#each this.grades}}
+          <li>{{this.date}}</li>
+          <li>{{this.grade}}</li>
+          <li>{{this.score}}</li>
+          <br />
+        {{/each}}
+      </td>
+      <td>{{this.name}}</td>
+      <td>{{this.restaurant_id}}</td>
+    </tr>
+  {{/each}}
+</table>

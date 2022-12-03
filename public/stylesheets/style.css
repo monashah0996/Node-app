@@ -1,0 +1,30 @@
+.header {
+  font-weight: bold;
+  padding: 6px ;
+  text-align: center;
+  width: 100%;
+  background:  #444;
+  color: white;
+  font-size: 30px;
+}
+body {
+  text-align: center;
+  align-items: center;
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.footer{
+	background: #444;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+	box-sizing: border-box;
+	width: 100%;
+	font: bold 16px sans-serif;
+  text-align: center;
+	overflow: hidden;
+  color: white;
+}
+
+b {
+  color: red;
+}   

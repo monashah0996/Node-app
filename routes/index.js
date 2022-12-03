@@ -1,0 +1,108 @@
+const express = require("express");
+const router = express.Router();
+var db = require("../modules/method");
+
+router.get("/", (req, res) => {
+  res.send("Welcome to the Project");
+  console.log("hello");
+});
+
+router.get("/api/restaurants", async function (req, res) {
+  let output = await db.getAllRestaurants();
+  //console.log(output)
+  res.send(output);
+});
+
+router.get("/api/restaurants/:restaurant_id", async function (req, res) {
+  let id = req.params.restaurant_id;
+  let output = await db.getRestaurantById(id);
+  //console.log(output)
+  res.send(output);
+});
+
+router.get("/restaurants/search", function (req, res) {
+  res.render("form");
+});
+
+router.post("/restaurants/search", async (req, res) => {
+  let page = req.body.page;
+  let perPage = req.body.perPage;
+  let borough = req.body.borough;
+  let output = await db.getRestaurantByFilter(page, perPage, borough);
+  res.render("formdata", { data: output });
+});
+
+router.get(
+  "/api/restaurants/:page/:perPage:/:borough",
+  async function (req, res) {
+    console.log("3");
+    let page = req.query.page;
+    let perPage = req.query.perPage;
+    let borough = req.query.borough;
+    console.log(page);
+    console.log("---------");
+    console.log(perPage);
+    console.log("---------");
+    console.log(borough);
+    let output = await db.getRestaurantByFilter(page, perPage, borough);
+    res.send(output);
+  }
+);
+
+router.post("/api/restaurants", async function (req, res) {
+  //console.log(7);
+  var data = {
+    address: {
+      building: req.body.building,
+      coord: req.body.coord,
+      street: req.body.street,
+      zipcode: req.body.zipcode,
+    },
+    borough: req.body.borough,
+    cuisine: req.body.cuisine,
+    grades: {
+      date: req.body.date,
+      grade: req.body.grade,
+      score: req.body.score,
+    },
+    name: req.body.name,
+    restaurant_id: req.body.restaurant_id,
+  };
+  let output = await db.addNewRestaurant(data);
+  res.send(output);
+});
+
+router.put("/api/restaurants/:restaurant_id", async function (req, res) {
+  let id = req.params.restaurant_id;
+  var data = {
+    address: {
+      building: req.body.building,
+      coord: req.body.coord,
+      street: req.body.street,
+      zipcode: req.body.zipcode,
+    },
+    borough: req.body.borough,
+    cuisine: req.body.cuisine,
+    grades: {
+      date: req.body.date,
+      grade: req.body.grade,
+      score: req.body.score,
+    },
+    name: req.body.name,
+    restaurant_id: req.body.restaurant_id,
+  };
+  let result = await db.updateRestaurantByID(data, id);
+  console.log(result);
+  res.send(result);
+});
+
+router.delete("/api/restaurants/:restaurant_id", async function (req, res) {
+  let id = req.params.restaurant_id;
+  let result = await db.deleteRestaurantByID(id);
+  if (result) {
+    res.send("Restaurant Deleted");
+  } else {
+    console.log("Restaurant not deleted");
+  }
+});
+module.exports = router;
