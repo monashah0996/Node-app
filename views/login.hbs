@@ -1,0 +1,22 @@
+<br /><br />
+<form method="POST" action="/restaurants/search">
+  <br />Username:
+  <input type="text" name="username" />
+  <br />
+  <br />
+  Password:
+  <input type="password" name="password" />
+  <br />
+  <br />
+  <input type="submit" value="Submit" />
+  <br/>
+  <br/>
+  <p align="center">No Login? <a href="/users/signup">Create New Account</a></p>
+  <br/>
+  <br/>
+  {{#if this.error}}
+    <p align="center" style="color:green;">{{this.error}}</p>
+  {{/if}}
+  <br/>
+  <br/>
+</form>

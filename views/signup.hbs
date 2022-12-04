@@ -1,0 +1,26 @@
+<br /><br />
+<form method="POST" action="/newUser">
+  <br />Username:
+  <input type="text" name="username" />
+  <br />
+  <br />
+  Password:
+  <input type="password" name="password" />
+  <br />
+  <br />
+  Confirm Password:
+  <input type="password" name="confirmPassword" />
+  <br />
+  <br />
+  <input type="submit" value="Submit" />
+  <br/>
+  <br/>
+   <p align="center" >Already have an account? <a href="/users/login">Login here</a></p>
+  <br/>
+  <br/>
+  {{#if this.error}}
+    <p align="center" style="color:red;">{{this.error}}</p>
+  {{/if}}
+  <br/>
+  <br/>
+</form>

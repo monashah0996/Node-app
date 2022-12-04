@@ -7,6 +7,35 @@ router.get("/", (req, res) => {
   console.log("hello");
 });
 
+router.get("/users/login", function (req, res) {
+  res.render("login", {title:'Login', error:null});
+});
+
+router.get("/users/signup", function (req, res) {
+  res.render("signup", {title:'Signup', error:null});
+});
+
+router.post("/newUser",async function (req, res) {
+  let username = req.body.username;
+  let password = req.body.password;
+  let confirmPassword = req.body.confirmPassword;
+
+  if(username != '' && password != '' && confirmPassword != ''){
+    if(confirmPassword == password){
+      let output = await db.addUser(username,password);
+      if(output == true){
+        res.render('login', {title:'Login', error:"Please login with your new account"}); 
+      }else{
+        res.render('signup', {title:'Signup', error:"User already Exists!!"});
+      }
+    } else{
+      res.render('signup', {title:'Signup', error:"Passwords dosen't match. Please check the Passwords!!"});
+    }
+  }else{
+    res.render('signup', {title:'Signup', error:"All fields are required. Please check and try again!!"});
+  }
+});
+
 router.get("/api/restaurants", async function (req, res) {
   let output = await db.getAllRestaurants();
   //console.log(output)
