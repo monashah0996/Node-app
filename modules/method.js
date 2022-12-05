@@ -24,22 +24,23 @@ function initialize(url) {
   Users = require("../models/user");
 }
 
-async function addUser(username,password) {
+async function addUser(username, password) {
   try {
     //console.log('8')
     let result = false;
-    let query = {username:username}
-    let userSearch = await Users.findOne(query).then(async(data)=>{
-      if(!data){
+    let query = { username: username }
+    let userSearch = await Users.findOne(query).then(async (data) => {
+      if (!data) {
         let saltRounds = 10;
-        let passwordSalt = await bcrypt.genSalt(saltRounds,async(err, salt) => {
-          let passwordHash = await bcrypt.hash(password,salt,async(err, hash) => {
-            let account = {username:username, password:hash, level:'admin'};
-            let newUser = Users.create(account);
+        let passwordSalt = await bcrypt.genSalt(saltRounds, async (err, salt) => {
+          let passwordHash = await bcrypt.hash(password, salt, async (err, hash) => {
+            let account = { username: username, password: hash, level: 'admin' };
+            let newUser = new Users(account);
+            let savedUser = await newUser.save()
           });
         });
         result = true;
-      }else{
+      } else {
         result = false;
       }
     });
@@ -49,6 +50,29 @@ async function addUser(username,password) {
     console.log(error);
   }
 }
+
+async function validateUser(username, password) {
+  try {
+    //console.log('9')
+    let loginSuccess = false;
+    let query = { username: username }
+    let userSearch = await Users.findOne(query).then(async (data) => {
+      await bcrypt.compare(password, data.password).then((isMatch) => {
+        console.log(data)
+        console.log("-----------")
+        console.log(password)
+        console.log(username)
+        loginSuccess = isMatch;
+        return loginSuccess;
+      })
+      console.log("loginsuccess" + loginSuccess);
+    });
+    return loginSuccess;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 async function getAllRestaurants() {
   try {
@@ -110,13 +134,13 @@ async function updateRestaurantByID(data, id) {
 
 async function deleteRestaurantByID(id) {
   try {
-  await Restaurants.remove({
-    _id: id,
-  });
-  return true;
-} catch(error){
-  console.log(error);
-}
+    await Restaurants.remove({
+      _id: id,
+    });
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports.initialize = initialize;
@@ -127,3 +151,4 @@ module.exports.addNewRestaurant = addNewRestaurant;
 module.exports.updateRestaurantByID = updateRestaurantByID;
 module.exports.deleteRestaurantByID = deleteRestaurantByID;
 module.exports.addUser = addUser;
+module.exports.validateUser = validateUser;

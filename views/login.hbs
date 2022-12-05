@@ -1,5 +1,5 @@
 <br /><br />
-<form method="POST" action="/restaurants/search">
+<form method="POST" action="/validateUser">
   <br />Username:
   <input type="text" name="username" />
   <br />
@@ -15,7 +15,7 @@
   <br/>
   <br/>
   {{#if this.error}}
-    <p align="center" style="color:green;">{{this.error}}</p>
+    <p align="center" style="color:red;">{{this.error}}</p>
   {{/if}}
   <br/>
   <br/>

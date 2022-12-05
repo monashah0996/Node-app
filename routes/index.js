@@ -36,6 +36,22 @@ router.post("/newUser",async function (req, res) {
   }
 });
 
+router.post("/validateUser",async function (req, res) {
+  let username = req.body.username;
+  let password = req.body.password;
+
+  if(username != '' && password != ''){
+    let output = await db.validateUser(username,password);
+    if(output == true){
+      res.redirect("/"); 
+    }else{
+      res.render('login', {title:'Login', error:"Invalid Login"});
+    }
+  }else{
+    res.render('login', {title:'Login', error:"All fields are required. Please check and try again!!"});
+  }
+});
+
 router.get("/api/restaurants", async function (req, res) {
   let output = await db.getAllRestaurants();
   //console.log(output)
