@@ -14,9 +14,9 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" })); // parse applica
 var Restaurants;
 var Users;
 
-function initialize(url) {
+async function initialize(url) {
   console.log(url);
-  mongoose.connect(url);
+  await mongoose.connect(url);
   const database_status = mongoose.connection;
   database_status.on("error", (error) => console.log(error));
   database_status.once("open", () => console.log("Connected to Mongoose"));
