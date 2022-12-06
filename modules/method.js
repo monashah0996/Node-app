@@ -58,10 +58,6 @@ async function validateUser(username, password) {
     let query = { username: username }
     let userSearch = await Users.findOne(query).then(async (data) => {
       await bcrypt.compare(password, data.password).then((isMatch) => {
-        console.log(data)
-        console.log("-----------")
-        console.log(password)
-        console.log(username)
         loginSuccess = isMatch;
         return loginSuccess;
       })

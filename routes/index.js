@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 var db = require("../modules/method");
+var jwtHelper = require("../modules/jwtHelper");
+const { verifyAccessToken } = require("../modules/jwtHelper");
 
 router.get("/", (req, res) => {
   res.send("Welcome to the Project");
@@ -43,7 +45,8 @@ router.post("/validateUser",async function (req, res) {
   if(username != '' && password != ''){
     let output = await db.validateUser(username,password);
     if(output == true){
-      res.redirect("/"); 
+      const accessToken = await jwtHelper.signAccessToken(username)
+      res.send(accessToken); 
     }else{
       res.render('login', {title:'Login', error:"Invalid Login"});
     }
@@ -52,7 +55,7 @@ router.post("/validateUser",async function (req, res) {
   }
 });
 
-router.get("/api/restaurants", async function (req, res) {
+router.get("/api/restaurants", verifyAccessToken, async function (req, res) {
   let output = await db.getAllRestaurants();
   //console.log(output)
   res.send(output);
@@ -65,7 +68,7 @@ router.get("/api/restaurants/:restaurant_id", async function (req, res) {
   res.send(output);
 });
 
-router.get("/restaurants/search", function (req, res) {
+router.get("/restaurants/search",function (req, res) {
   res.render("form");
 });
 
@@ -77,10 +80,7 @@ router.post("/restaurants/search", async (req, res) => {
   res.render("formdata", { data: output });
 });
 
-router.get(
-  "/api/restaurants/:page/:perPage:/:borough",
-  async function (req, res) {
-    console.log("3");
+router.get("/api/restaurants/:page/:perPage:/:borough", async function (req, res) {
     let page = req.query.page;
     let perPage = req.query.perPage;
     let borough = req.query.borough;
