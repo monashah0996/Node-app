@@ -3,11 +3,12 @@
   padding: 6px ;
   text-align: center;
   width: 100%;
-  background:  #444;
-  color: white;
+  background: #444;
+  color: antiquewhite;
   font-size: 30px;
 }
 body {
+  /* width: 100%; */
   text-align: center;
   align-items: center;
   padding: 50px;
@@ -22,9 +23,17 @@ body {
 	font: bold 16px sans-serif;
   text-align: center;
 	overflow: hidden;
-  color: white;
+  color: antiquewhite;
 }
 
-b {
+/* b {
   color: red;
-}   
+}  */
+table{
+  width: 100%;
+  /* border-collapse: collapse; */
+  background-color:antiquewhite;
+}  
+th{
+background-color: beige;
+}
